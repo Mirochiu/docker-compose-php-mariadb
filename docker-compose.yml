@@ -1,5 +1,8 @@
 version: "3.8"
 
+# run with rebuild
+# docker-compose up -d --build
+
 # run
 # docker-compose up -d
 
@@ -9,8 +12,20 @@ version: "3.8"
 # stop
 # docker-compose down
 
+# docker exec -it frontend-web bash
+# docker exec -it backend-db bash
+
+# docker logs frontend-web
+# docker logs backend-db
+
+# docker network inspect my-bus
+
+# docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' backend-db
+# docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' frontend-web
+
 services:
   php:
+    container_name: frontend-web
     build:
       context: .
       dockerfile: Dockerfile
@@ -18,3 +33,32 @@ services:
       - 3000:80
     volumes:
       - ./src:/var/www/html
+    depends_on:
+      - mariadb
+    networks:
+      - backbone
+    environment:
+      DB_HOST: backend-db
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  mariadb:
+    container_name: backend-db
+    image: mariadb:10.3
+    ports:
+      - 3306:3306
+    networks:
+      - backbone
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbvolume:/var/lib/mysql
+
+volumes:
+  dbvolume:
+
+networks:
+  backbone:
+    name: my-bus
