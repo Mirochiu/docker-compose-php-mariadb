@@ -12,6 +12,9 @@ version: "3.8"
 # stop
 # docker-compose down
 
+# stop and remove volumes
+# docker-compose down -v
+
 # docker exec -it frontend-web bash
 # docker exec -it backend-db bash
 
@@ -40,7 +43,7 @@ services:
     environment:
       DB_HOST: backend-db
       DB_NAME: ${DB_NAME}
-      DB_USERNAME: root
+      DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
 
   mariadb:
@@ -52,7 +55,9 @@ services:
       - backbone
     environment:
       MARIADB_DATABASE: ${DB_NAME}
-      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PWD}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
     volumes:
       - dbvolume:/var/lib/mysql
 
