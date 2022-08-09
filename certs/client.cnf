@@ -1,0 +1,15 @@
+# for client certificate
+
+[ req ]
+prompt = no
+distinguished_name      = req_distinguished_name
+string_mask = utf8only
+
+[ req_distinguished_name ]
+C = TW
+ST = Taiwan
+L = Taipei
+O = Example Inc.
+OU = Example Dept.
+CN = I'm a user
+emailAddress = admin@example.com
