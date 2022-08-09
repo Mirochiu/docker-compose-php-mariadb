@@ -15,6 +15,10 @@ version: "3.8"
 # stop and remove volumes
 # docker-compose down -v
 
+# config file
+# docker cp frontend-web:/etc/apache2/apache2.conf configs/
+# docker cp frontend-web:/usr/local/etc/php/php.ini-production configs/
+
 # docker exec -it frontend-web bash
 # docker exec -it backend-db bash
 
