@@ -39,20 +39,64 @@
         }
     }
 
+    $sslConfig = array(
+        "ca.crt" => "/etc/certs/root-ca.crt",
+        "certificate" => "/etc/certs/client.crt", // for 2-way SSL/TLS
+        "private.key" => "/etc/certs/client-key.pem", // for 2-way SSL/TLS
+    );
+    echo "<h3>print certificate configs</h3>";
+    foreach ($sslConfig as $name) {
+        echo $name." is readable?".is_readable($name)."<br/>";
+    }
+
     echo "<h3>connect to db</h3>";
     echo $host.'=>'.gethostbyname($host)."<br/>";
 
     $connection = mysqli_init();
     $connection->options(MYSQLI_OPT_CONNECT_TIMEOUT, 1);
     $connection->options(MYSQLI_OPT_READ_TIMEOUT, 1);
-    $connection->real_connect($host,$dbuser,$dbpassword,$dbname);
-    // $connection = new mysqli($host,$dbuser,$dbpassword,$dbname);
-    if ($connection->connect_error) {
-        echo "fail to connect DB, reason:".$connection->connect_error."<br/>";
-    } else {
-        $connection->close();
-        echo "connect to DB success"."<br/>";
+    $connection->options(MYSQLI_OPT_SSL_VERIFY_SERVER_CERT, true);
+    if (!$connection->ssl_set(
+        $sslConfig["private.key"],
+        $sslConfig["certificate"],
+        $sslConfig["ca.crt"],
+        NULL,
+        NULL)) {
+        echo "fail to ssl_set".
+            ", code: ".$connection->connect_errno.
+            " reason:".$connection->connect_error."<br/>";
+        exit();
     }
+
+    if (!$connection->real_connect(
+        "mineserver.localhost",
+        $dbuser,
+        $dbpassword,
+        $dbname,
+        3306,
+        NULL,
+        MYSQLI_CLIENT_SSL)) {
+        echo "fail to connect DB".
+            ", code: ".$connection->connect_errno.
+            " reason:".$connection->connect_error."<br/>";
+        exit();
+    }
+
+    echo 'connected to DB:'.$connection->host_info."<br/>";
+
+    $tableName = "mytable";
+    $sql = sprintf(
+        "SELECT * FROM %s",
+        $tableName
+    );
+    $result = $connection->query($sql);
+    if (!$result) {
+        echo 'query failed, messag:'.$connection->error."<br/>";
+    } else {
+        print_r($result);
+    }
+
+    $connection->close();
 
     echo "<h3>php info</h3>";
     phpinfo();

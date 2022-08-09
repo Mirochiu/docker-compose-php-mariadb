@@ -65,12 +65,13 @@ services:
       - ./src:/var/www/html
       - ./configs/php.ini-production:/usr/local/etc/php/php.ini:ro
       - ./configs/apache2.conf:/etc/apache2/apache2.conf:ro
+      - ./certs:/etc/certs
     depends_on:
       - mariadb
     networks:
       - backbone
     environment:
-      DB_HOST: backend-db
+      DB_HOST: mineserver.localhost
       DB_NAME: ${DB_NAME}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
