@@ -18,6 +18,7 @@ version: "3.8"
 # config file
 # docker cp frontend-web:/etc/apache2/apache2.conf configs/
 # docker cp frontend-web:/usr/local/etc/php/php.ini-production configs/
+# docker cp backend-db:/etc/mysql/my.cnf configs/
 
 # check timezone for php
 # 1. enter container
