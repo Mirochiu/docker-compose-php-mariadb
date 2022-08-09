@@ -19,6 +19,17 @@ version: "3.8"
 # docker cp frontend-web:/etc/apache2/apache2.conf configs/
 # docker cp frontend-web:/usr/local/etc/php/php.ini-production configs/
 
+# check timezone for php
+# 1. enter container
+#   $ docker exec -it frontend-web bash
+# 2. check system config and date
+#   $ echo $TZ
+#   $ date
+# 3. php config
+#   $ php --info | grep timezone
+# 4. php source code
+#   <? echo date("Y-m-d h:i:s") ?>
+
 # docker exec -it frontend-web bash
 # docker exec -it backend-db bash
 
@@ -40,6 +51,8 @@ services:
       - 3000:80
     volumes:
       - ./src:/var/www/html
+      - ./configs/php.ini-production:/usr/local/etc/php/php.ini:ro
+      - ./configs/apache2.conf:/etc/apache2/apache2.conf:ro
     depends_on:
       - mariadb
     networks:
