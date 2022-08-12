@@ -61,15 +61,21 @@ version: "3.8"
 services:
   php:
     container_name: frontend-web
+    hostname: mineap.localhost
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - 3000:80
+      - 3001:443
     volumes:
       - ./src:/var/www/html
       - ./configs/php.ini-production:/usr/local/etc/php/php.ini:ro
       - ./configs/apache2.conf:/etc/apache2/apache2.conf:ro
+      - ./configs/default-ssl.conf:/etc/apache2/sites-enabled/default-ssl.conf:ro
+      - ./configs/ssl.conf:/etc/apache2/mods-enabled/ssl.conf:ro
+      - ./configs/ssl.load:/etc/apache2/mods-enabled/ssl.load:ro
+      - ./configs/socache_shmcb.load:/etc/apache2/mods-enabled/socache_shmcb.load:ro
       - ./certs:/etc/certs
     depends_on:
       - mariadb

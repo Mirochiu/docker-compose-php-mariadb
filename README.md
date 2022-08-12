@@ -11,15 +11,19 @@
 ## 基本操作
 
 1. 進入本專案根目錄
-
 1. 背景啟動環境
-`docker-compose up -d`
-
+   `docker-compose up -d`
 1. 關閉環境
-`docker-compose down`
-
+   `docker-compose down`
 1. 本機瀏覽器開啟網頁
-http://localhost:3000
+   [http://localhost:3000](http://localhost:3000)
+
+如果網頁需要使用SSL
+
+1. mineap.localhost將`/etc/hosts`加入本機DNS
+   `echo "127.0.0.1 mineap.localhost" >> /etc/hosts`
+1. 本機瀏覽器開啟網頁
+   [https://mineap.localhost:3001](https://mineap.localhost:3001)
 
 ## DB操作
 
