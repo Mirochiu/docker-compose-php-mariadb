@@ -19,6 +19,9 @@ version: "3.8"
 # docker cp frontend-web:/etc/apache2/apache2.conf configs/
 # docker cp frontend-web:/etc/apache2/sites-available/000-default.conf configs/
 # docker cp frontend-web:/etc/apache2/sites-available/default-ssl.conf configs/
+# docker cp frontend-web:/etc/apache2/mods-available/ssl.conf configs/
+# docker cp frontend-web:/etc/apache2/mods-available/ssl.load configs/
+# docker cp frontend-web:/etc/apache2/mods-available/socache_shmcb.load configs/
 # docker cp frontend-web:/usr/local/etc/php/php.ini-production configs/
 # docker cp backend-db:/etc/mysql/my.cnf configs/
 
